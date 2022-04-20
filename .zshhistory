@@ -1,0 +1,8 @@
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+: 1650495898:0;sudo apt update
+: 1650496207:0;cd
+: 1650496209:0;ls
+: 1650496211:0;lat
+: 1650496233:0;cd
+: 1650496238:0;ls
+: 1650496241:0;la
