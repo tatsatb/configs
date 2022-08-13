@@ -1,6 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+
+
+
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -90,6 +93,9 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
+
+export PATH="$PATH:$HOME/.local/bin"
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -119,9 +125,11 @@ alias aptupg="sudo apt upgrade"
 alias aptupdg="sudo apt update && sudo apt upgrade"
 alias aptins="sudo apt install"
 alias aptrem="sudo apt purge"
-alias aptsch="apt cache search"
+alias aptsch="apt-cache search"
+
 alias lat="ls -lah"
 
+alias lsblk="lsblk -e7"
 
 
 
