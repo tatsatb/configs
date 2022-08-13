@@ -1,2 +1,2 @@
-# configs
-Linux Config files
+# Configs
+My personal Linux dotfiles. 
