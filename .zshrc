@@ -130,7 +130,7 @@ alias aptsch="apt-cache search"
 alias lat="ls -lah"
 
 alias lsblk="lsblk -e7"
-
+alias df="df -h"
 
 
 
