@@ -1,4 +1,4 @@
-# If you come from bash you might have to change your $PATH.
+#If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 
@@ -126,6 +126,13 @@ alias aptupdg="sudo apt update && sudo apt upgrade"
 alias aptins="sudo apt install"
 alias aptrem="sudo apt purge"
 alias aptsch="apt-cache search"
+
+
+alias pacup="sudo pacman -Syu"
+alias pacins="sudo pacman -S"
+alias pacrem="sudo pacman -Rsn"
+alias pacauto="sudo pacman -Qtdq | sudo pacman -Rns -"
+
 
 alias lat="ls -lah"
 
