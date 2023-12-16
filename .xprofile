@@ -1,0 +1,6 @@
+kilall lxpanel &
+lxsession &
+/home/tatsatb/.screenlayout/defaulttb.sh &
+nitrogen --restore &
+picom &
+(sleep 3 && lxpanel) &
