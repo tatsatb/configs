@@ -28,7 +28,12 @@ set wildmenu
 set wildmode=list:longest
 set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 
+
+let mapleader = " "
+nnoremap <leader>f :Files<CR>
+
 colorscheme slate
+
 
 set clipboard=unnamedplus
 
@@ -40,3 +45,14 @@ if executable(s:clip)
         autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
     augroup END
 endif
+
+
+" ------------Plugin Section---------------
+
+call plug#begin()
+    Plug 'preservim/nerdtree'
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
+    Plug 'preservim/nerdcommenter'
+call plug#end()
+
