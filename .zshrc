@@ -144,4 +144,11 @@ alias lsblk="lsblk -e7"
 alias df="df -h"
 
 
+# Enable Mise environment management
 
+
+# Load Conda 
+alias condain="source ~/miniconda3/bin/activate"
+
+# Enable Mise environment management
+eval "$(mise activate zsh)"
