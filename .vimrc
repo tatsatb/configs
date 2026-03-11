@@ -63,7 +63,17 @@ nnoremap <leader>q :q<CR>
 nnoremap <leader>s :wq<CR>
 
 
+nnoremap <leader>v :set paste!<CR>
+
+
+" ----------Set colors and highlighting-----------------
+
+set t_Co=256
+set t_ut=
 colorscheme slate
+highlight CursorLine cterm=NONE ctermbg=236 ctermfg=NONE
+highlight CursorLineNr cterm=NONE ctermbg=236 ctermfg=Yellow
+
 
 
 " ------------Clipboard Configuration START---------------
