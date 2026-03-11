@@ -65,67 +65,56 @@ nnoremap <leader>s :wq<CR>
 
 colorscheme slate
 
+
 " ------------Clipboard Configuration START---------------
 
 " WSL Detection 
 function! IsWSL()
-    if has('unix')
-        if filereadable('/proc/version')
-            let proc_version = readfile('/proc/version')[0]
-            if proc_version =~? 'microsoft\|wsl'
-                return 1
-            endif
-        endif
-        
-        if exists('$WSL_DISTRO_NAME') || exists('$WSLENV')
-            return 1
-        endif
-        
-        if isdirectory('/mnt/c')
+    if has('unix') && filereadable('/proc/version')
+        let proc_version = readfile('/proc/version')[0]
+        if proc_version =~? 'microsoft\|wsl'
             return 1
         endif
     endif
     return 0
 endfunction
 
-" Clipboard functions
-function! ClipboardYank()
-    if IsWSL()
-        call system('/mnt/c/Windows/System32/clip.exe', @")
-    elseif executable('xclip')
-        call system('xclip -selection clipboard', @")
-    endif
-endfunction
+" 1. Handle WSL First (Bypass +clipboard trap)
+if IsWSL()
+    vnoremap <leader>y y:<C-u>call system('/mnt/c/Windows/System32/clip.exe', @")<CR>
+    nnoremap <leader>yy yy:call system('/mnt/c/Windows/System32/clip.exe', @")<CR>
+    " Use Vim's native substitute() instead of a shell pipe to strip carriage returns
+    nnoremap <leader>p :let @" = substitute(system('powershell.exe -NoProfile -Command Get-Clipboard'), '\r', '', 'g')<CR>p
+    vnoremap <leader>p :<C-u>let @" = substitute(system('powershell.exe -NoProfile -Command Get-Clipboard'), '\r', '', 'g')<CR>p
 
-function! ClipboardPaste()
-    if executable('xclip') && !IsWSL()
-        let @" = system('xclip -selection clipboard -o')
+" 2. Handle Native Clipboard Support (Mac/Linux)
+elseif has('clipboard')
+    if has('macunix') || has('mac')
+        " macOS uses the * register
+        set clipboard=unnamed
+    else
+        " Linux uses the + register
+        set clipboard=unnamedplus
     endif
-endfunction
 
-" Configure clipboard based on capabilities
-if has('clipboard')
-    set clipboard=unnamedplus
+" 3. Handle Fallbacks if no +clipboard (Mac/Linux)
 else
-    " Use our custom clipboard functions
-    augroup CustomClipboard
-        autocmd!
-        " Automatically copy yanks to system clipboard
-        autocmd TextYankPost * if v:event.operator ==# 'y' | call ClipboardYank() | endif
-    augroup END
-    
-    " Clipboard mappings
-    vnoremap <leader>y y:call ClipboardYank()<CR>
-    nnoremap <leader>y y:call ClipboardYank()<CR>
-    nnoremap <leader>Y yy:call ClipboardYank()<CR>
-    nnoremap <leader>p :call ClipboardPaste()<CR>p
-    vnoremap <leader>p d:call ClipboardPaste()<CR>p
+    if executable('pbcopy')
+        " macOS Fallbacks
+        vnoremap <leader>y y:<C-u>call system('pbcopy', @")<CR>
+        nnoremap <leader>yy yy:call system('pbcopy', @")<CR>
+        nnoremap <leader>p :let @" = system('pbpaste')<CR>p
+        vnoremap <leader>p :<C-u>let @" = system('pbpaste')<CR>p
+    elseif executable('xclip')
+        " Linux Fallbacks
+        vnoremap <leader>y y:<C-u>call system('xclip -selection clipboard', @")<CR>
+        nnoremap <leader>yy yy:call system('xclip -selection clipboard', @")<CR>
+        nnoremap <leader>p :let @" = system('xclip -selection clipboard -o')<CR>p
+        vnoremap <leader>p :<C-u>let @" = system('xclip -selection clipboard -o')<CR>p
+    endif
 endif
 
-
 " ------------Clipboard Configuration END-----------------
-
-
 
 
 " ------------Plugin Section---------------
@@ -143,6 +132,7 @@ call plug#begin()
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
     Plug 'preservim/nerdcommenter'
+    Plug 'ojroques/vim-oscyank'
 call plug#end()
 
 
@@ -150,3 +140,6 @@ nnoremap <leader>e :NERDTreeToggle<CR>
 let NERDTreeIgnore=['\.pyc$', '\.pyo$', '__pycache__', '\.git$']
 
 nnoremap <leader>f :Files<CR>
+
+"---Fixing copying over tmux/ssh
+autocmd TextYankPost * if v:event.operator is 'y' | execute 'OSCYankRegister ' . (empty(v:event.regname) ? '"' : v:event.regname) | endif
