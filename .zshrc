@@ -98,7 +98,7 @@ export PATH="$PATH:$HOME/.local/bin"
 
 
 
-export EDITOR='nvim'
+export EDITOR='vim'
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
