@@ -70,7 +70,7 @@ config.cell_width = 1.0
 
 -- ── Window ──────────────────────────────────────────────────────────────────
 
-config.window_background_opacity = 0.91
+config.window_background_opacity = 0.69
 config.macos_window_background_blur = 25
 config.window_padding = { left = 8, right = "1.5cell", top = 8, bottom = 8 }
 if wezterm.target_triple:find("darwin") then
@@ -175,6 +175,7 @@ config.keys = {
     { key = "[", mods = "LEADER",       action = act.ActivateCopyMode            },
     { key = "y", mods = "LEADER",       action = act.CopyTo "ClipboardAndPrimarySelection" },
 
+
     -- Clear scrollback
     { key = "k", mods = "CMD",          action = act.ClearScrollback "ScrollbackAndViewport" },
 
@@ -182,6 +183,9 @@ config.keys = {
     { key = "=", mods = "CTRL",         action = act.IncreaseFontSize             },
     { key = "-", mods = "CTRL",         action = act.DecreaseFontSize             },
     { key = "0", mods = "CTRL",         action = act.ResetFontSize                },
+
+    -- Newline in Claude Code (Shift+Enter → raw newline)
+    { key = "Enter", mods = "SHIFT",    action = act.SendString "\n"              },
 }
 
 -- Direct tab switching (Leader + 1-9)
